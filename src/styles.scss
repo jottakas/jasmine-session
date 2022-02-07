@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+.main-container {
+  padding-top: 3rem;
+}
+
+.banner {
+  height: 40px;
+  background: #ddd;
+}
+
+.product-card .card-text {
+  height: 200px;
+  overflow: hidden;
+}
+
+.text-ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.cart-wrapper {
+  min-height: 80vh;
+  height: 95%;
+}
