@@ -1,16 +1,25 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CartProduct, Product } from '../shared/interfaces';
 
+/**
+ * Service used as an in-memory store for the cart;
+ * contains products and the way to add/remove them
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   private cartProducts: CartProduct[] = [];
+  evtCartChange: EventEmitter<CartProduct[]> = new EventEmitter();
 
   constructor() {}
 
   getCartProducts() {
     return this.cartProducts;
+  }
+
+  isCartEmpty() {
+    return this.cartProducts.length == 0;
   }
 
   getQuantityInCart(productId: number) {
@@ -20,7 +29,7 @@ export class CartService {
 
   private getProductFromCart = (productId: number) =>
     this.cartProducts.find(
-      (cartProduct) => cartProduct.product.id == productId
+      (cartProduct) => cartProduct.product.id === productId
     );
 
   addSingleProductToCart(productToAdd: Product) {
@@ -31,6 +40,26 @@ export class CartService {
     } else {
       this.cartProducts.push({ product: productToAdd, quantity: 1 });
     }
+
+    this.evtCartChange.emit(this.cartProducts);
+  }
+
+  incrementQuantity(productId: number) {
+    const cartProduct = this.getProductFromCart(productId)!;
+    cartProduct.quantity++;
+
+    this.evtCartChange.emit(this.cartProducts);
+  }
+
+  decrementQuantity(productId: number) {
+    const cartProduct = this.getProductFromCart(productId)!;
+    cartProduct.quantity--;
+
+    if (cartProduct.quantity === 0) {
+      this.removeWholeProductFromCart(cartProduct.product);
+    }
+
+    this.evtCartChange.emit(this.cartProducts);
   }
 
   removeSingleProductFromCart(productToRemove: Product) {
@@ -43,9 +72,11 @@ export class CartService {
         this.removeWholeProductFromCart(productToRemove);
       }
     }
+
+    this.evtCartChange.emit(this.cartProducts);
   }
 
-  removeWholeProductFromCart(productToRemove: Product) {
+  private removeWholeProductFromCart(productToRemove: Product) {
     this.cartProducts = this.cartProducts.filter((cartProduct) => {
       cartProduct.product.id !== productToRemove.id;
     });

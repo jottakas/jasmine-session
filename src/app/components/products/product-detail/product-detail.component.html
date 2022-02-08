@@ -1,26 +1,19 @@
-<div class="card product-card mb-3">
+<div *ngIf="product" class="card product-card mb-3">
   <div class="card-body">
     <h5 class="card-title">{{ product.name }}</h5>
     <p class="card-text">
       {{ product.description }}
     </p>
 
-    <button
-      *ngIf="!quantityInCart"
-      class="btn btn-primary me-1"
-      (click)="evtAdd.emit(product.id)"
-    >
-      Add to cart
+    <button class="btn btn-primary me-1" (click)="evtAdd.emit(product.id)">
+      + Add to cart
     </button>
-    <div *ngIf="quantityInCart">
-      <button class="btn btn-primary me-1" (click)="evtAdd.emit(product.id)">
-        +
-      </button>
+    <ng-container *ngIf="quantityInCart">
       {{ quantityInCart }}
 
       <button class="btn btn-danger" (click)="evtRemove.emit(product.id)">
         -
       </button>
-    </div>
+    </ng-container>
   </div>
 </div>

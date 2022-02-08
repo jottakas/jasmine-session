@@ -12,24 +12,31 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
 
   constructor(
-    private productService: ProductsService,
-    public cartService: CartService
+    private readonly productService: ProductsService,
+    public readonly cartService: CartService
   ) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe((r) => {
       this.products = r;
-      console.log(r);
     });
   }
 
+  /** Looks up a product from its id and adds it to the cart */
   addProduct(productId: number) {
+    // Look up the product
     const productToAdd = this.products.find((p) => p.id == productId)!;
+
+    // Add
     this.cartService.addSingleProductToCart(productToAdd);
   }
 
+  /** Looks up a product from its id and removes it from the cart */
   removeProduct(productId: number) {
+    // Look up the product
     const productToRemove = this.products.find((p) => p.id == productId)!;
+
+    // Remove
     this.cartService.removeSingleProductFromCart(productToRemove);
   }
 }

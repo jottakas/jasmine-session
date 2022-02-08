@@ -15,10 +15,13 @@ export class ProductsService {
   }
 }
 
-const PRODUCTS: Product[] = Array(10)
-  .fill(0)
-  .map((_v, idx) => ({
-    id: idx,
-    name: `Product number ${idx + 1}`,
-    description: Utils.getLoremIpsumRandom(),
-  }));
+export const createProductsMockData = () =>
+  Array(10)
+    .fill(0)
+    .map((_v, idx) => ({
+      id: idx + 1,
+      name: `Product number ${idx + 1}`,
+      description: Utils.getLoremIpsumRandom(),
+    }));
+
+const PRODUCTS: Product[] = createProductsMockData();
