@@ -5,13 +5,21 @@
       {{ product.description }}
     </p>
 
-    <button class="btn btn-primary me-1" (click)="evtAdd.emit(product.id)">
+    <button
+      class="btn btn-primary btn-add-to-cart me-1"
+      (click)="evtAdd.emit(product.id)"
+    >
       + Add to cart
     </button>
     <ng-container *ngIf="quantityInCart">
-      {{ quantityInCart }}
+      <span class="quantity">
+        {{ quantityInCart }}
+      </span>
 
-      <button class="btn btn-danger" (click)="evtRemove.emit(product.id)">
+      <button
+        class="btn btn-danger btn-remove-from-cart"
+        (click)="evtRemove.emit(product.id)"
+      >
         -
       </button>
     </ng-container>
